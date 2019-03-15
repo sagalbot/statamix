@@ -31,7 +31,7 @@ Available Tags:
 - `mix:css` 
 - `mix:js`
 
-### `{{ mix:css }}`
+##### `{{ mix:css }}`
 
 ```handlebars
   <link rel="stylesheet" href="{{ mix:css }}">
@@ -40,7 +40,7 @@ Available Tags:
   <link rel="/dist/sagalbot.css?id=5db0aa442df0520ca63d">
 ```
 
-### `{{ mix:js }}`
+##### `{{ mix:js }}`
 
 ```handlebars
   <script src="{{ mix:js }}"></script>
