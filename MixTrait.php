@@ -43,12 +43,6 @@ trait MixTrait
         $path = '/'.Str::ensureRight($src, '.'.$type);
 
         if ($this->isHotReloading()) {
-            $url = rtrim(file_get_contents(webroot_path('dist'.'/hot')));
-
-            //if (Str::startsWith($url, ['http://', 'https://'])) {
-            //    return (new HtmlString($url.$path))->toHtml();
-            //}
-
             return (new HtmlString("//localhost:8080{$path}"))->toHtml();
         }
 
