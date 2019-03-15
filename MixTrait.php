@@ -2,6 +2,7 @@
 
 namespace Statamic\Addons\Mix;
 
+use Illuminate\Support\HtmlString;
 use Statamic\API\Config;
 use Statamic\API\File;
 use Statamic\API\Str;
@@ -39,7 +40,17 @@ trait MixTrait
          * Build the path by taking the type (passed through the function)
          * and the $src (taken from above).
          */
-        $path = '/' . Str::ensureRight($src, '.'.$type);
+        $path = '/'.Str::ensureRight($src, '.'.$type);
+
+        if ($this->isHotReloading()) {
+            $url = rtrim(file_get_contents(webroot_path('dist'.'/hot')));
+
+            //if (Str::startsWith($url, ['http://', 'https://'])) {
+            //    return (new HtmlString($url.$path))->toHtml();
+            //}
+
+            return (new HtmlString("//localhost:8080{$path}"))->toHtml();
+        }
 
         /**
          * Grab the manifest from the collection and pass through the path.
@@ -50,7 +61,12 @@ trait MixTrait
          * Use our themeUrl function to check if the asset exists in the manifest.
          * If it does, pass through the path. Else, return the boolean.
          */
-        return $this->themeUrl($manifest ? $manifest : $path);
+        return $this->url($manifest ? $manifest : $path);
+    }
+
+    private function isHotReloading()
+    {
+        return file_exists(webroot_path('dist'.'/hot'));
     }
 
     /**
@@ -70,7 +86,7 @@ trait MixTrait
      * @param string $path
      * @return string $url
      */
-    private function themeUrl($path)
+    private function url($path)
     {
         $url = URL::assemble('dist', $path);
         $url = URL::prependSiteUrl($url, $this->get('locale', default_locale()), false);
